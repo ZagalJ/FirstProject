@@ -13,24 +13,28 @@
         </header>
         <!-- Quick welcome message -->
         <h2 class="h2">Hello, welcome to our page</h2>
-
-        <div class="form-group column col-4">
+        <!-- Created a div for the search option, includes 2 divs for select form -->
+        <div class="form-group column col-4"> 
+          <!-- column class to separate option and search input -->
           <div class="column">
+            <!-- Select form for multiple options -->
             <select class="form-select">
+              <!-- options -->
               <option>Choose and option</option>
-              <option>Music</option>
-              <option>Movies</option>
-              <option>Books</option>
+              <option class="musicOpt">Music</option>
+              <option class="MoviesOpt">Movies</option>
+              <option class="BooksOpt">Books</option>
             </select>
             </div>
-            <label class="label-rounded">
-                Search
-            </label>
+            <!-- search section -->
+            <label class="label-rounded"> Search </label>
             <input class="form-input songName" placeholder="Search for a Song, Album or Artist"></input>
             <input class="btn btn-primary" type="submit" value="Submit">
         </div>
+        <!-- table to display song information -->
         <table class="table table=hover table-striped">
             <thead>
+                <!-- values at the top of the table -->
               <tr>
                 <th>Song</th>
                 <th>Artist</th>
@@ -39,6 +43,7 @@
               </tr>
             </thead>
             <tbody>
+              <!-- content of the table with custom classes to change later in the JS-->
               <tr>
                 <td class="songName">song 1</td>
                 <td class="artistName">me</td>
@@ -54,16 +59,12 @@
             </tbody>
           </table>
           <div>
+            <!-- div to add additional suggestions-->
             <label>You might also like</label>
-            <table>
-              <thead>
-                <tr>
-                  <th>
-                    
-                  </th>
-                </tr>
-              </thead>
-            </table>
+            <ul>
+              <li>Other Song</li>
+              <li>Other Artist</li>
+            </ul>
           </div>
     </body>
 </html>
