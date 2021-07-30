@@ -9,28 +9,43 @@
     <body>
         <header>
           <!-- header for the project name -->
-            <h1 class="h1">Project page</h1> 
+            <h1 class="h1 bg-gray">Project page</h1> 
         </header>
-        <!-- Quick welcome message -->
-        <h2 class="h2">Hello, welcome to our page</h2>
-        <!-- Created a div for the search option, includes 2 divs for select form -->
-        <div class="form-group column col-4"> 
-          <!-- column class to separate option and search input -->
-          <div class="column">
-            <!-- Select form for multiple options -->
-            <select class="form-select">
-              <!-- options -->
-              <option>Choose and option</option>
-              <option class="musicOpt">Music</option>
-              <option class="MoviesOpt">Movies</option>
-              <option class="BooksOpt">Books</option>
-            </select>
+
+        <div class="container bg-secondary"> <!--Container for the search function  -->
+          <!-- Quick welcome message -->
+          <h2 class="h2">Hello, welcome to our page</h2>
+            <!-- Created a div for the search option, includes 2 divs for select form -->
+            <!-- <div class="form-group column col-4">  -->
+              <!-- column class to separate option and search input -->
+              <!-- <div class="column"> -->
+                <!-- Select form for multiple options -->
+                <!-- <select class="form-select"> -->
+                  <!-- options -->
+                  <!-- <option>Choose and option</option>
+                  <option class="musicOpt">Music</option>
+                  <option class="MoviesOpt">Movies</option>
+                  <option class="BooksOpt">Books</option>
+                </select> -->
+              <div class="container">
+                <label class="label-rounded"> Search </label>
+              <div class="columns col-oneline"> 
+                <!-- search section -->
+                <input class="column form-input songName col-4" placeholder="Search for a Song"></input>
+                <input class="column btn btn-primary column col-1" type="submit" value="Submit">
+              </div>
             </div>
-            <!-- search section -->
-            <label class="label-rounded"> Search </label>
-            <input class="form-input songName" placeholder="Search for a Song, Album or Artist"></input>
-            <input class="btn btn-primary" type="submit" value="Submit">
         </div>
+        <div class="container hero-lg hero">
+          Container
+          <div class="albumCover">
+            div for album cover
+          </div>
+          <div class="artistName">
+            Div for artist name
+          </div>
+        </div>
+        <div class="container">
         <!-- table to display song information -->
         <table class="table table=hover table-striped">
             <thead>
@@ -44,6 +59,7 @@
             </thead>
             <tbody>
               <!-- content of the table with custom classes to change later in the JS-->
+                <!-- A for loop can be used to add values. 10 would be ideal -->
               <tr>
                 <td class="songName">song 1</td>
                 <td class="artistName">me</td>
@@ -58,13 +74,18 @@
               </tr>
             </tbody>
           </table>
+          </div>
+          <!--End of the container for top songs  -->
           <div>
             <!-- div to add additional suggestions-->
             <label>You might also like</label>
-            <ul>
-              <li>Other Song</li>
-              <li>Other Artist</li>
-            </ul>
+            <div class="suggestions">
+              <!-- use class suggestions to fill list. another for loop can be used to add values-->
+              <ul>
+                <li>Other Song</li>
+                <li>Other Artist</li>
+              </ul>
+            </div>
           </div>
     </body>
 </html>
