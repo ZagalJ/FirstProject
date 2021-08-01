@@ -1,14 +1,27 @@
 $(document).ready(function () {
+  //sets initial value for search string and hides divs
   var searchString = "";
+  $("#playlistTable").hide();
+  $("#suggestionsContainer").hide();
 
+  //creates event listener for search button
   $("#searchSubmit").click(() => {
     searchString = $(".songName").val();
     fetchArtist(searchString);
   });
 
+  //creates event listener for modal button
+  $("#btn-clear").click(() => {
+    $("#modal").removeClass("active");
+  });
+
+  //fetches artist and track information from Deezer.com api
   function fetchArtist(searchString) {
     var fetchDeezerUrl =
-      "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + searchString;
+      "https://deezerdevs-deezer.p.rapidapi.com/search/artist?q=" +
+      '"' +
+      searchString +
+      '"';
     fetch(fetchDeezerUrl, {
       method: "GET",
       headers: {
@@ -18,16 +31,21 @@ $(document).ready(function () {
     })
       .then((response) => {
         if (!response.ok) {
-          alert("Something has gone wrong. Error " + response.status);
+          displayError("Something has gone wrong. Error " + response.status);
           return response.status;
         }
-        console.log(response);
         return response.json();
       })
       .then((responseArray) => {
         console.log(responseArray);
+
+        //calls functions to display information gathered from fetch to Deezer.com
         displaySearchedArtist(responseArray.data);
+
+        //calls function that displays 10 tracks by searched artist and displays 30 second clip
         displayDiscography(responseArray.data);
+
+        //calls fetch for information from TasteDive.com
         fetchTasteDiveApi(responseArray.data);
       })
       .catch((err) => {
@@ -35,72 +53,134 @@ $(document).ready(function () {
       });
   }
 
+  //populates divs related to searched artist
   function displaySearchedArtist(data) {
+    //clears information from any prior searches
     $(".albumCover").empty();
     $(".artistName").empty();
+
+    //populates artist name and photo
     $(".albumCover").append(
       $("<img>", {
         class: "artistImage",
-        src: data[0].artist.picture_xl,
+        src: data[0].picture_xl,
       })
     );
-    $(".artistName").append(data[0].artist.name);
+    $(".artistName").append(data[0].name);
     return;
   }
 
+  //populates song and album information with 30 second sample of song
   function displayDiscography(data) {
-    var songList = $("#songListContainer").children();
-    console.log(songList);
-    $(".songName").empty();
-    $(".albumName").empty();
-    $(".link").empty();
-    // $(".songList").show();
+    //creates url for fetch from Deezer.com
+    var fetchDeezerUrl =
+      "https://deezerdevs-deezer.p.rapidapi.com/artist/" +
+      data[0].id +
+      "/top?limit=10";
 
-    songList.each(function (i, val) {
-      console.log(i);
-      //   console.log($(this));
-      var songNameEl = $(this).children(":nth-child(1)");
-      var albumNameEl = $(this).children(":nth-child(2)");
-      var sampleEL = $(this).children(":nth-child(3)");
+    //calls second fetch from Deezer.com using specific artist ID to eliminate search issues in API
+    fetch(fetchDeezerUrl, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "472ab927bbmsh9b52a6734e789bfp1337bajsn4f53ca22608a",
+        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          displayError("Something has gone wrong. Error " + response.status);
+          return response.status;
+        }
+        //   console.log(response);
+        return response.json();
+      })
+      .then((responseArray) => {
+        //gets list of all direct children of container
+        var songList = $("#songListContainer").children();
 
-      //   var songTitle = data[i].title_short;
-      //   console.log(songTitle);
+        //clears display from any previous searches and shows table if still hidden
+        $(".songName").empty();
+        $(".albumName").empty();
+        $(".link").empty();
+        $("#playlistTable").show();
 
-      $(songNameEl).append(data[i].title_short);
-      $(albumNameEl).append(data[i].album.title);
-      $(sampleEL).append(
-        '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
-          data[i].preview +
-          "></audio>"
-      );
-    });
-    return;
+        //populates each child of songlist with information from fetch from Deezer.com
+        songList
+          .each(function (i, val) {
+            var songNameEl = $(this).children(":nth-child(1)");
+            var albumNameEl = $(this).children(":nth-child(2)");
+            var sampleEL = $(this).children(":nth-child(3)");
+
+            $(songNameEl).append(responseArray.data[i].title_short);
+            $(albumNameEl).append(responseArray.data[i].album.title);
+            $(sampleEL).append(
+              '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
+                responseArray.data[i].preview +
+                "></audio>"
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        return;
+      });
   }
 
-  //fetch tasteDive api
+  //fetches tasteDive api
   function fetchTasteDiveApi(data) {
     var fetchTasteDiveUrl =
       "https://chriscastle.com/proxy/index.php?:proxy:https://tastedive.com/api/similar?q=" +
-      data[0].artist.name +
+      data[0].name +
       "&verbose=1&k=420901-rectunes-4A08YANA";
-    console.log(fetchTasteDiveUrl);
 
     fetch(fetchTasteDiveUrl)
       .then((response) => {
         if (!response.ok) {
-          alert("Something has gone wrong. Error " + response.status);
+          displayError("Something has gone wrong. Error " + response.status);
           return response.status;
         }
-        console.log(response);
+
         return response.json();
       })
       .then((responseArray) => {
-        console.log(responseArray);
+        //calls function that displays similar artist reccomendations
+        displaySuggestions(responseArray.Similar);
       })
       .catch((err) => {
         console.error(err);
       });
   }
-  //display 5 similar artist reccomendations
-  //sample song
+
+  //display 5 similar artist reccomendations with link to a youtube.com video
+  function displaySuggestions(data) {
+    var suggestionList = $("#suggestions").children();
+
+    //clears any information from revious searches
+    $(".suggestedArtist").empty();
+    $(".suggestedVideo").empty();
+    $("#suggestionsContainer").show();
+
+    //populates suggested artist name and video
+    suggestionList.each(function (i, val) {
+      var bandNameEl = $(this).children(":nth-child(1)");
+      var sampleVideoEl = $(this).children(":nth-child(2)");
+
+      $(bandNameEl).append(data.Results[i].Name);
+      $(sampleVideoEl).append(
+        "<iframe src=" +
+          data.Results[i].yUrl +
+          'width="560" height="315" frameborder="0"></iframe>'
+      );
+    });
+
+    return;
+  }
+
+  //displays error message
+  function displayError(errorString) {
+    console.log("bad");
+    $("#modal").addClass("active");
+    $("#content").append(errorString);
+    return;
+  }
 });
