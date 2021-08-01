@@ -2,6 +2,7 @@
 <html>
     <head>
       <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
       <script src="script.js"></script>
       <link rel="stylesheet" href="style.css">
       <!-- <link rel="stylesheet" href="style.css"> -->
@@ -31,34 +32,33 @@
                   <option class="BooksOpt">Books</option>
                 </select> -->
               <div class="container">
-                <label class="label-rounded"> Search </label>
+                <!-- <label class="label-rounded"> Search </label> -->
               <div class="columns col-oneline"> 
                 <!-- search section -->
-                <input class="column form-input songName col-4" placeholder="Search for a Song"></input>
+                <input class="column form-input songName col-4" placeholder="Search for an Artist"></input>
                 <input class="column btn btn-primary column col-1" id ="searchSubmit" type="submit" value="Submit">
               </div>
             </div>
         </div>
         <div class="container hero-lg hero">
-          Container
+          
           <div class="albumCover">
-            div for album cover
+           
           </div>
           <div class="artistName">
-            Div for artist name
+           
           </div>
         </div>
         <div class="container">
 
         <!-- table to display song information -->
-        <table class="table table=hover table-striped">
+        <table id="playlistTable" class="table table=hover table-striped">
             <thead>
                 <!-- values at the top of the table -->
               <tr>
                 <th>Song</th>
-                <th>Artist</th>
                 <th>Album</th>
-                <th>Link</th>
+                <th>Sample</th>
               </tr>
             </thead>
             <tbody id="songListContainer">
@@ -120,17 +120,50 @@
           </table>
           </div>
           <!--End of the container for top songs  -->
-          <div>
+          <div id="suggestionsContainer">
             <!-- div to add additional suggestions-->
             <label>You might also like</label>
 
-            <div class="suggestions">
+            <div id="suggestions">
               <!-- use class suggestions to fill list. another for loop can be used to add values-->
-              <ul>
-                <li>Other Song</li>
-                <li>Other Artist</li>
+              <ul class="suggestionItem">
+                <li class="suggestedArtist"></li>
+                <li class="suggestedVideo"></li>
+              </ul>
+              <ul class="suggestionItem">
+                <li class="suggestedArtist"></li>
+                <li class="suggestedVideo"></li>
+              </ul>
+              <ul class="suggestionItem">
+                <li class="suggestedArtist"></li>
+                <li class="suggestedVideo"></li>
+              </ul>
+              <ul class="suggestionItem">
+                <li class="suggestedArtist"></li>
+                <li class="suggestedVideo"></li>
+              </ul>
+              <ul class="suggestionItem">
+                <li class="suggestedArtist"></li>
+                <li class="suggestedVideo"></li>
               </ul>
             </div>
+
+<!-- test modal -->
+
+<div class="modal" id="modal-id">
+  <a href="#close" class="modal-overlay" aria-label="Close"></a>
+  <div class="modal-container">
+    <div class="modal-header">
+      <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+      <div class="modal-title h5">OOPS!</div>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+      </div>
+    </div>
+    
+  </div>
+</div>
 
           </div>
     </body>
