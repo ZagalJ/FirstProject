@@ -105,24 +105,24 @@ $(document).ready(function () {
         $("#playlistTable").show();
 
         //populates each child of songlist with information from fetch from Deezer.com
-        songList
-          .each(function (i, val) {
-            var songNameEl = $(this).children(":nth-child(1)");
-            var albumNameEl = $(this).children(":nth-child(2)");
-            var sampleEL = $(this).children(":nth-child(3)");
+        songList.each(function (i, val) {
+          var songNameEl = $(this).children(":nth-child(1)");
+          var albumNameEl = $(this).children(":nth-child(2)");
+          var sampleEL = $(this).children(":nth-child(3)");
 
-            $(songNameEl).append(responseArray.data[i].title_short);
-            $(albumNameEl).append(responseArray.data[i].album.title);
-            $(sampleEL).append(
-              '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
-                responseArray.data[i].preview +
-                "></audio>"
-            );
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+          $(songNameEl).append(responseArray.data[i].title_short);
+          $(albumNameEl).append(responseArray.data[i].album.title);
+          $(sampleEL).append(
+            '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
+              responseArray.data[i].preview +
+              "></audio>"
+          );
+        });
+
         return;
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 
