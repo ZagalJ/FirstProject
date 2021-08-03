@@ -195,7 +195,7 @@ $(document).ready(function () {
           "www.youtube.com/" +
           youtubeId[1] +
           "</a>"
-
+      )
 
       $(bandNameEl).append(data.Results[i].Name);
       $(sampleVideoEl).append(
