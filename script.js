@@ -11,6 +11,9 @@ $(document).ready(function () {
   });
 
   //creates event listener for modal button
+
+  $(".btn-clear").click(() => {
+    $(".modal").removeClass("active");
   $("#btn-clear").click(() => {
     $("#modal").removeClass("active");
   });
@@ -91,7 +94,7 @@ $(document).ready(function () {
           displayError("Something has gone wrong. Error " + response.status);
           return response.status;
         }
-        //   console.log(response);
+
         return response.json();
       })
       .then((responseArray) => {
@@ -105,6 +108,25 @@ $(document).ready(function () {
         $("#playlistTable").show();
 
         //populates each child of songlist with information from fetch from Deezer.com
+        songList.each(function (i, val) {
+          var songNameEl = $(this).children(":nth-child(1)");
+          var albumNameEl = $(this).children(":nth-child(2)");
+          var sampleEL = $(this).children(":nth-child(3)");
+
+          $(songNameEl).append(responseArray.data[i].title_short);
+          $(albumNameEl).append(responseArray.data[i].album.title);
+          $(sampleEL).append(
+            '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
+              responseArray.data[i].preview +
+              "></audio>"
+          );
+        });
+
+        return;
+      })
+      .catch((err) => {
+        console.error(err);
+
         songList
           .each(function (i, val) {
             var songNameEl = $(this).children(":nth-child(1)");
@@ -164,6 +186,16 @@ $(document).ready(function () {
     suggestionList.each(function (i, val) {
       var bandNameEl = $(this).children(":nth-child(1)");
       var sampleVideoEl = $(this).children(":nth-child(2)");
+      var youtubeId = data.Results[i].yUrl.split("d/");
+      $(bandNameEl).append(data.Results[i].Name);
+      $(sampleVideoEl).append(
+        '<a target="_blank" href="https://www.youtube.com/watch?v=' +
+          youtubeId[1] +
+          '">' +
+          "www.youtube.com/" +
+          youtubeId[1] +
+          "</a>"
+
 
       $(bandNameEl).append(data.Results[i].Name);
       $(sampleVideoEl).append(
@@ -178,6 +210,9 @@ $(document).ready(function () {
 
   //displays error message
   function displayError(errorString) {
+    $(".modal").addClass("active");
+    $("#content").empty();
+
     console.log("bad");
     $("#modal").addClass("active");
     $("#content").append(errorString);
