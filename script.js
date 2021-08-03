@@ -11,8 +11,11 @@ $(document).ready(function () {
   });
 
   //creates event listener for modal button
+
   $(".btn-clear").click(() => {
     $(".modal").removeClass("active");
+  $("#btn-clear").click(() => {
+    $("#modal").removeClass("active");
   });
 
   //fetches artist and track information from Deezer.com api
@@ -37,6 +40,8 @@ $(document).ready(function () {
         return response.json();
       })
       .then((responseArray) => {
+        console.log(responseArray);
+
         //calls functions to display information gathered from fetch to Deezer.com
         displaySearchedArtist(responseArray.data);
 
@@ -89,6 +94,7 @@ $(document).ready(function () {
           displayError("Something has gone wrong. Error " + response.status);
           return response.status;
         }
+
         return response.json();
       })
       .then((responseArray) => {
@@ -120,6 +126,25 @@ $(document).ready(function () {
       })
       .catch((err) => {
         console.error(err);
+
+        songList
+          .each(function (i, val) {
+            var songNameEl = $(this).children(":nth-child(1)");
+            var albumNameEl = $(this).children(":nth-child(2)");
+            var sampleEL = $(this).children(":nth-child(3)");
+
+            $(songNameEl).append(responseArray.data[i].title_short);
+            $(albumNameEl).append(responseArray.data[i].album.title);
+            $(sampleEL).append(
+              '<audio class="song-controller" id="song" controls="controls" volume="0.1"><source src=' +
+                responseArray.data[i].preview +
+                "></audio>"
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        return;
       });
   }
 
@@ -170,6 +195,13 @@ $(document).ready(function () {
           "www.youtube.com/" +
           youtubeId[1] +
           "</a>"
+
+
+      $(bandNameEl).append(data.Results[i].Name);
+      $(sampleVideoEl).append(
+        "<iframe src=" +
+          data.Results[i].yUrl +
+          'width="560" height="315" frameborder="0"></iframe>'
       );
     });
 
@@ -180,6 +212,9 @@ $(document).ready(function () {
   function displayError(errorString) {
     $(".modal").addClass("active");
     $("#content").empty();
+
+    console.log("bad");
+    $("#modal").addClass("active");
     $("#content").append(errorString);
     return;
   }
